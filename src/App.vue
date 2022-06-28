@@ -1,6 +1,6 @@
 <template>
   <img alt="Vue logo" src="./assets/logo.png">
-  <FileReader/>
+  <FileReader @receivedFiles="saveFiles"/>
 </template>
 
 <script>
@@ -10,6 +10,23 @@ export default {
   name: 'App',
   components: {
     FileReader
+  },
+  data() {
+    return {
+      input: null,
+      output: null
+    };
+  },
+  methods: {
+    /*
+      Save file contents received from another component into data().
+      @param {Object} data - An object containing the file contents.
+    */
+    saveFiles: function (data) {
+      console.log(data);
+      this.input = data.input;
+      this.output = data.output;
+    }
   }
 }
 </script>

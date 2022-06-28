@@ -5,24 +5,40 @@
     </div>
 
     <h2>Input JSON File<sup class="red">*</sup></h2>
-    <input class="form-control" type="file" accept="application/json" ref="input"/>
+    <input class="form-control" type="file" accept="application/json" id="inputFile"/>
 
     <h2>Output JSON File (optional)</h2>
-    <input class="form-control" type="file" accept="application/json" ref="output"/>
+    <input class="form-control" type="file" accept="application/json" id="outputFile"/>
 
     <button id="readFileBtn" class="btn-primary btn-lg" @click="readFiles()">Read File(s)</button>
   </div>
 </template>
 
 <script type="text/javascript">
+  /*
+    Resets any non-null String values inside an Object instance to a default
+    empty string. The Object passed as parameter may be complex (i.e. have
+    nested objects within itself).
+
+    @param {Object} obj - The object to be reset.
+    @returns {Object} The object after the reset.
+  */
+  var recursiveReset = (obj) => {
+    Object.keys(obj).forEach(key => {
+      if (typeof obj[key] === 'object' && obj[key] !== null) {
+        obj[key] = recursiveReset(obj[key]);
+      } else {
+        obj[key] = "";
+      }
+    });
+
+    return obj;
+  }
+
   export default {
     name: "fileReader",
     data() {
       return {
-        inputFile: null,
-        inputContent: null,
-        outputFile: null,
-        outputContent: null,
         showAlert: false,
         error: ""
       }
@@ -30,27 +46,52 @@
     methods: {
       /*
         This function will read and parse a JSON file from the file input and
-        save its contents to the active memory.
+        send its contents back to the parent component via the received-files
+        event.
       */
       readFiles: function () {
-        if (!this.$refs.input.files.length) {
-          this.error = "An input file is required before proceeding.";
+        if (!document.getElementById("inputFile").files.length) {
+          this.error = "At least an input file is required before proceeding.";
           this.showAlert = true;
           return;
         }
 
-        this.inputFile = this.$refs.input.files[0];
-        this.outputFile = this.$refs.output.files.length ? this.$refs.output.files[0] : null;
+        this.showAlert = false;
+
+        let inputFile = document.getElementById("inputFile").files[0];
+        let outputFile = document.getElementById("outputFile").files.length ? document.getElementById("outputFile").files[0] : null;
+        let content = {
+          input: {},
+          output: {}
+        };
 
         let inputReader = new FileReader();
         let outputReader = new FileReader();
 
-        inputReader.onload = e => this.inputContent = JSON.parse(e.target.result);
-        outputReader.onload = e => this.outputContent = JSON.parse(e.target.result);
+        inputReader.onload = e => {
+          content.input = JSON.parse(e.target.result);
 
-        inputReader.readAsText(this.inputFile);
-        if (this.outputFile) outputReader.readAsText(this.outputFile);
+          outputReader.onload = f => {
+            content.output = JSON.parse(f.target.result);
+            this.$emit("received-files", content);
+          };
+
+          if (outputFile !== null) {
+            outputReader.readAsText(outputFile);
+          } else {
+            content.output = recursiveReset(JSON.parse(JSON.stringify(content.input)));
+            this.$emit("received-files", content);
+          }
+        };
+
+        inputReader.readAsText(inputFile);
       }
     }
   }
 </script>
+
+<style lang="scss">
+  .red {
+    color: red;
+  }
+</style>
