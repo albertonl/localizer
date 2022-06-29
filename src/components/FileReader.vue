@@ -1,14 +1,21 @@
 <template>
-  <div class="file-reader" id="fileReader">
+  <div class="file-reader mx-5 my-3" id="fileReader">
     <div class="alert alert-warning file-error-alert" :class="{ 'd-none': !showAlert }">
       {{ error }}
     </div>
 
-    <h2>Input JSON File<sup class="red">*</sup></h2>
-    <input class="form-control" type="file" accept="application/json" id="inputFile"/>
-
-    <h2>Output JSON File (optional)</h2>
-    <input class="form-control" type="file" accept="application/json" id="outputFile"/>
+    <div class="mb-2 row">
+      <label class="reader-label col-3 col-form-label" for="inputFile">Input JSON File<sup class="red">*</sup></label>
+      <div class="col-9 my-auto">
+        <input class="form-control" type="file" accept="application/json" id="inputFile"/>
+      </div>
+    </div>
+    <div class="mb-2 row">
+      <label class="reader-label col-3 col-form-label" for="outputFile">Output JSON File (optional)</label>
+      <div class="col-9 my-auto">
+        <input class="form-control" type="file" accept="application/json" id="outputFile"/>
+      </div>
+    </div>
 
     <button id="readFileBtn" class="btn-primary btn-lg" @click="readFiles()">Read File(s)</button>
   </div>
@@ -93,5 +100,10 @@
 <style lang="scss">
   .red {
     color: red;
+  }
+
+  .reader-label {
+    font-weight: bold;
+    cursor: pointer;
   }
 </style>
