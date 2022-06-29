@@ -6,6 +6,8 @@
 <script>
 import FileReader from './components/FileReader.vue'
 
+import {equalize} from './utils/processor.js'
+
 export default {
   name: 'App',
   components: {
@@ -13,19 +15,23 @@ export default {
   },
   data() {
     return {
-      input: null,
-      output: null
+      input: {},
+      output: {}
     };
   },
   methods: {
-    /*
-      Save file contents received from another component into data().
-      @param {Object} data - An object containing the file contents.
-    */
+    /**
+      * Save file contents received from another component into data().
+      * @param {Object} data - An object containing the file contents.
+      */
     saveFiles: function (data) {
       console.log(data);
       this.input = data.input;
-      this.output = data.output;
+
+      // equalize key-value pairs in both objects
+      this.output = equalize(data.input, data.output);
+      console.log(this.input);
+      console.log(this.output.hobbies);
     }
   }
 }

@@ -15,14 +15,14 @@
 </template>
 
 <script type="text/javascript">
-  /*
-    Resets any non-null String values inside an Object instance to a default
-    empty string. The Object passed as parameter may be complex (i.e. have
-    nested objects within itself).
-
-    @param {Object} obj - The object to be reset.
-    @returns {Object} The object after the reset.
-  */
+  /**
+    * Resets any non-null String values inside an Object instance to a default
+    * empty string. The Object passed as parameter may be complex (i.e. have
+    * nested objects within itself).
+    *
+    * @param {Object} obj - The object to be reset.
+    * @returns {Object} The object after the reset.
+    */
   var recursiveReset = (obj) => {
     Object.keys(obj).forEach(key => {
       if (typeof obj[key] === 'object' && obj[key] !== null) {
@@ -44,11 +44,11 @@
       }
     },
     methods: {
-      /*
-        This function will read and parse a JSON file from the file input and
-        send its contents back to the parent component via the received-files
-        event.
-      */
+      /**
+        * This function will read and parse a JSON file from the file input and
+        * send its contents back to the parent component via the received-files
+        * event.
+        */
       readFiles: function () {
         if (!document.getElementById("inputFile").files.length) {
           this.error = "At least an input file is required before proceeding.";
