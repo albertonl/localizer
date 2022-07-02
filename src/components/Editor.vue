@@ -28,6 +28,26 @@
         </div>
     </div>
     <div id="outputEditor" class="col-lg-6 col-sm-12">
+        <table class="path-wrapper mx-auto mb-3">
+            <tr>
+                <td>Last saved:</td>
+                <td id="lastSavedDate" class="path"></td>
+            </tr>
+        </table>
+        <div id="valueEditor" class="d-block mx-auto" contenteditable="true">
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Odio placeat nemo, illo aliquid, quidem enim expedita veniam aperiam in perferendis ipsum qui similique, eaque ab non? Sapiente corporis magnam voluptatibus.
+        </div>
+        <div class="btn-group-lg me-2 d-block mx-auto my-4" id="editorControls" aria-label="Editor controls">
+            <button type="button" class="btn btn-primary mx-1" aria-label="Save" title="Save the current version">
+                Save
+            </button>
+            <button type="button" class="btn btn-primary mx-1" aria-label="Download" title="Download the current version">
+                Download
+            </button>
+            <button type="button" class="btn btn-outline-danger mx-1" aria-label="Delete" title="Delete all changes">
+                Delete
+            </button>
+        </div>
     </div>
   </div>
 </template>
@@ -39,15 +59,19 @@
 </script>
 
 <style lang="scss">
-    div#valueReader {
+    div#valueReader, div#valueEditor {
         height: 40vh;
-        width: 450px;
+        width: 60%;
+        max-width: 50vw;
         outline: 1px solid black;
         padding: 15px;
         font-family: monospace;
         text-align: left;
         overflow: auto;
         resize: both;
+    }
+
+    div#valueReader {
         background-color: #eee;
     }
 
